@@ -1,16 +1,19 @@
-export default function Footer(props) {
-    const { showModal, handleToggleModal, data } = props
-
-    return (
-        <footer>
-            <div className="bgGradient"></div>
-            <div>
-                <h1>APOD PROJECT</h1>
-                <h2>{data?.title}</h2>
-            </div>
-            <button onClick={handleToggleModal}>
-                <i className="fa-solid fa-circle-info"></i>
-            </button>
-        </footer>
-    )
+import PropTypes from "prop-types";
+export default function Footer({ setShowModal }) {
+  return (
+    <footer>
+      <div className="bgGradient"></div>
+      <div>
+        <h2>The Brutal Mars Landscape</h2>
+        <h1>APOD PROJECT</h1>
+      </div>
+      <button onClick={() => setShowModal((prev) => !prev)}>
+        <i className="fa-solid fa-circle-info"></i>
+      </button>
+    </footer>
+  );
 }
+
+Footer.propTypes = {
+  setShowModal: PropTypes.func.isRequired,
+};

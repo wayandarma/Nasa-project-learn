@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default function App() {
   // API KEY
-  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiKey = import.meta.env.VITE_NASA_API_KEY;
 
   // STATE
   const [showModal, setShowModal] = useState(false);
@@ -17,6 +17,7 @@ export default function App() {
   useEffect(() => {
     const fetchApiData = async () => {
       const url = "https://api.nasa.gov/planetary/apod" + `?api_key=${apiKey}`;
+      console.log(url);
       try {
         setLoading(true);
         const response = await axios.get(url);
@@ -27,21 +28,30 @@ export default function App() {
       setLoading(false);
     };
     fetchApiData();
+    console.log(error);
+    console.log(apiData);
   }, []);
   return (
     <>
-      {apiData ? (
-        <Main />
-      ) : (
+      {loading ? (
         <div className="loadingState">
           <i className="fa-solid fa-gear"></i>
         </div>
+      ) : (
+        <Main />
       )}
-      {showModal && (
-        <SideBar setShowModal={setShowModal} showModal={showModal} />
+      {apiData && (
+        <>
+          {showModal && (
+            <SideBar
+              setShowModal={setShowModal}
+              showModal={showModal}
+              apiData={apiData[0]}
+            />
+          )}
+          <Footer setShowModal={setShowModal} apiData={apiData[0]} />
+        </>
       )}
-
-      <Footer setShowModal={setShowModal} />
     </>
   );
 }

@@ -1,10 +1,10 @@
-import PropTypes from "prop-types";
-export default function Footer({ setShowModal }) {
+import PropTypes, { array } from "prop-types";
+export default function Footer({ setShowModal, apiData }) {
   return (
     <footer>
       <div className="bgGradient"></div>
       <div>
-        <h2>The Brutal Mars Landscape</h2>
+        <h2>{apiData.title}</h2>
         <h1>APOD PROJECT</h1>
       </div>
       <button onClick={() => setShowModal((prev) => !prev)}>
@@ -16,4 +16,5 @@ export default function Footer({ setShowModal }) {
 
 Footer.propTypes = {
   setShowModal: PropTypes.func.isRequired,
+  apiData: array,
 };

@@ -30,10 +30,17 @@ export default function App() {
   }, []);
   return (
     <>
+      {apiData ? (
+        <Main />
+      ) : (
+        <div className="loadingState">
+          <i className="fa-solid fa-gear"></i>
+        </div>
+      )}
       {showModal && (
         <SideBar setShowModal={setShowModal} showModal={showModal} />
       )}
-      <Main />
+
       <Footer setShowModal={setShowModal} />
     </>
   );

@@ -1,4 +1,3 @@
-import PropTypes, { array } from "prop-types";
 export default function Footer({ setShowModal, apiData }) {
   return (
     <footer>
@@ -13,8 +12,3 @@ export default function Footer({ setShowModal, apiData }) {
     </footer>
   );
 }
-
-Footer.propTypes = {
-  setShowModal: PropTypes.func.isRequired,
-  apiData: array,
-};

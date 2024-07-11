@@ -20,28 +20,25 @@ export default function App() {
       const today = new Date().toDateString();
       const localKey = `NASA-${today}`;
 
-      console.log(localKey);
       if (localStorage.getItem(localKey)) {
         const pastData = JSON.parse(localStorage.getItem(localKey));
         console.log("fetch From local Storage");
         return setApiData(pastData);
       }
-
-      localStorage.clear();
       try {
         setLoading(true);
         const response = await axios.get(url);
-        console.log("fetch from api");
         setApiData(response.data);
+        localStorage.setItem(localKey, JSON.stringify(response.data));
       } catch (err) {
-        setError(err);
+        setError(err.message || "An error occurred");
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
-      localStorage.setItem(localKey, apiData);
     };
     fetchApiData();
   }, []);
+
   return (
     <>
       {loading ? (
@@ -51,18 +48,14 @@ export default function App() {
       ) : (
         <>{apiData ? <Main apiData={apiData} /> : <h1>{error}</h1>}</>
       )}
-      {apiData && (
-        <>
-          {showModal && (
-            <SideBar
-              setShowModal={setShowModal}
-              showModal={showModal}
-              apiData={apiData}
-            />
-          )}
-          <Footer setShowModal={setShowModal} apiData={apiData} />
-        </>
+      {showModal && (
+        <SideBar
+          setShowModal={setShowModal}
+          showModal={showModal}
+          apiData={apiData}
+        />
       )}
+      <Footer setShowModal={setShowModal} apiData={apiData} />
     </>
   );
 }

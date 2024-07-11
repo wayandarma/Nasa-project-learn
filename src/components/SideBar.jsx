@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 export default function SideBar({ showModal, setShowModal, apiData }) {
   return (
     <div className={`sidebar ${showModal ? "show" : "hide"}`}>
@@ -20,9 +18,3 @@ export default function SideBar({ showModal, setShowModal, apiData }) {
     </div>
   );
 }
-
-SideBar.propTypes = {
-  showModal: PropTypes.bool.isRequired,
-  setShowModal: PropTypes.func.isRequired,
-  apiData: PropTypes.array,
-};

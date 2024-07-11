@@ -116,7 +116,7 @@ footer button:hover {
 }
 
 .sidebarContents {
-  z-index: 15;
+  z-index: 100;
   position: relative;
   display: flex;
   flex-direction: column;

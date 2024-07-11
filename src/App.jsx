@@ -5,9 +5,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function App() {
-  // API KEY
-  const apiKey = import.meta.env.VITE_NASA_API_KEY;
-
   // STATE
   const [showModal, setShowModal] = useState(false);
   const [apiData, setApiData] = useState(null);
@@ -16,20 +13,34 @@ export default function App() {
 
   useEffect(() => {
     const fetchApiData = async () => {
+      // API KEY
+      const apiKey = import.meta.env.VITE_NASA_API_KEY;
       const url = "https://api.nasa.gov/planetary/apod" + `?api_key=${apiKey}`;
-      console.log(url);
+
+      const today = new Date().toDateString();
+      const localKey = `NASA-${today}`;
+
+      console.log(localKey);
+      if (localStorage.getItem(localKey)) {
+        const pastData = JSON.parse(localStorage.getItem(localKey));
+        console.log("fetch From local Storage");
+        return setApiData(pastData);
+      }
+
+      localStorage.clear();
       try {
         setLoading(true);
         const response = await axios.get(url);
+        console.log("fetch from api");
         setApiData(response.data);
       } catch (err) {
         setError(err);
       }
+
       setLoading(false);
+      localStorage.setItem(localKey, apiData);
     };
     fetchApiData();
-    console.log(error);
-    console.log(apiData);
   }, []);
   return (
     <>
@@ -38,7 +49,7 @@ export default function App() {
           <i className="fa-solid fa-gear"></i>
         </div>
       ) : (
-        <Main />
+        <>{apiData ? <Main apiData={apiData} /> : <h1>{error}</h1>}</>
       )}
       {apiData && (
         <>
@@ -46,10 +57,10 @@ export default function App() {
             <SideBar
               setShowModal={setShowModal}
               showModal={showModal}
-              apiData={apiData[0]}
+              apiData={apiData}
             />
           )}
-          <Footer setShowModal={setShowModal} apiData={apiData[0]} />
+          <Footer setShowModal={setShowModal} apiData={apiData} />
         </>
       )}
     </>
